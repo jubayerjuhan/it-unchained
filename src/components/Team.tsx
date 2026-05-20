@@ -77,163 +77,207 @@ export default function Team() {
           </h2>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-6">
+        {/* Member cards */}
+        <div className="flex flex-wrap justify-center gap-6 mb-8">
           {members.map((m, i) => {
             const isEditing = editingIdx === i;
 
             return (
               <div
                 key={i}
-                className="glass-card flex flex-col items-center text-center w-72 p-7 relative"
-                style={{ minHeight: "380px" }}
+                className="glass-card flex flex-col items-center text-center w-80 relative overflow-hidden"
+                style={{ minHeight: "420px" }}
               >
-                {/* Edit / Save / Cancel buttons */}
-                <div className="absolute top-4 right-4 flex gap-1.5">
-                  {isEditing ? (
-                    <>
-                      <button
-                        onClick={() => saveEdit(i)}
-                        className="p-1.5 rounded-lg bg-green-500/10 text-green-600 hover:bg-green-500/20 transition-colors"
-                        aria-label="Save"
-                      >
-                        <Check size={15} />
-                      </button>
-                      <button
-                        onClick={cancelEdit}
-                        className="p-1.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-colors"
-                        aria-label="Cancel"
-                      >
-                        <X size={15} />
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      onClick={() => startEdit(i)}
-                      className="p-1.5 rounded-lg bg-[#3652ca]/10 text-[#3652ca] hover:bg-[#3652ca]/20 transition-colors"
-                      aria-label="Edit member"
-                    >
-                      <Pencil size={15} />
-                    </button>
-                  )}
-                </div>
-
-                {/* Quote */}
-                <div className="mb-5 w-full">
-                  {isEditing ? (
-                    <textarea
-                      value={editData?.quote ?? ""}
-                      onChange={(e) => setEditData((d) => d ? { ...d, quote: e.target.value } : d)}
-                      className="w-full text-sm text-gray-500 italic bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 resize-none focus:outline-none focus:border-[#3652ca] transition-colors"
-                      rows={3}
-                      placeholder="Quote…"
-                    />
-                  ) : (
-                    <p className="text-gray-400 italic text-sm leading-relaxed">
-                      &ldquo;{m.quote}&rdquo;
-                      {m.quoteAuthor && (
-                        <span className="block not-italic font-semibold text-xs mt-1 text-gray-300">
-                          — {m.quoteAuthor}
-                        </span>
-                      )}
-                    </p>
-                  )}
-                  {isEditing && (
-                    <input
-                      value={editData?.quoteAuthor ?? ""}
-                      onChange={(e) => setEditData((d) => d ? { ...d, quoteAuthor: e.target.value || null } : d)}
-                      className="w-full mt-2 text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#3652ca] transition-colors"
-                      placeholder="Quote author (optional)"
-                    />
-                  )}
-                </div>
-
-                {/* Photo */}
+                {/* Top gradient band behind photo */}
                 <div
-                  className="relative w-28 h-28 rounded-full overflow-hidden mb-4 flex-shrink-0"
-                  style={{
-                    background: "linear-gradient(135deg, #3652ca, #6366f1)",
-                    padding: "3px",
-                  }}
+                  className="w-full flex justify-center pt-8 pb-4 relative"
+                  style={{ background: "linear-gradient(160deg, rgba(54,82,202,0.08) 0%, rgba(99,102,241,0.12) 100%)" }}
                 >
-                  <div className="w-full h-full rounded-full overflow-hidden relative">
-                    <Image
-                      src={m.photo}
-                      alt={m.name}
-                      fill
-                      className="object-cover"
-                      sizes="112px"
-                    />
+                  {/* Edit / Save / Cancel buttons */}
+                  <div className="absolute top-3 right-3 flex gap-1.5">
+                    {isEditing ? (
+                      <>
+                        <button
+                          onClick={() => saveEdit(i)}
+                          className="p-1.5 rounded-lg bg-green-500/10 text-green-600 hover:bg-green-500/20 transition-colors"
+                          aria-label="Save"
+                        >
+                          <Check size={15} />
+                        </button>
+                        <button
+                          onClick={cancelEdit}
+                          className="p-1.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-colors"
+                          aria-label="Cancel"
+                        >
+                          <X size={15} />
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => startEdit(i)}
+                        className="p-1.5 rounded-lg bg-[#3652ca]/10 text-[#3652ca] hover:bg-[#3652ca]/20 transition-colors"
+                        aria-label="Edit member"
+                      >
+                        <Pencil size={15} />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Photo */}
+                  <div
+                    className="relative flex-shrink-0"
+                    style={{
+                      width: "120px",
+                      height: "120px",
+                      borderRadius: "50%",
+                      background: "linear-gradient(135deg, #3652ca, #6366f1)",
+                      padding: "3px",
+                    }}
+                  >
+                    <div className="w-full h-full rounded-full overflow-hidden relative">
+                      <Image
+                        src={m.photo}
+                        alt={m.name}
+                        fill
+                        className="object-cover object-top"
+                        sizes="120px"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* Name */}
-                {isEditing ? (
-                  <input
-                    value={editData?.name ?? ""}
-                    onChange={(e) => setEditData((d) => d ? { ...d, name: e.target.value } : d)}
-                    className="text-base font-bold text-[#0f0f1a] text-center w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 mb-1.5 focus:outline-none focus:border-[#3652ca] transition-colors"
-                    placeholder="Full name"
-                  />
-                ) : (
-                  <h6 className="font-bold text-[#0f0f1a] text-base">{m.name}</h6>
-                )}
+                {/* Content */}
+                <div className="flex flex-col items-center px-7 pb-7 pt-4 flex-1">
+                  {/* Name */}
+                  {isEditing ? (
+                    <input
+                      value={editData?.name ?? ""}
+                      onChange={(e) => setEditData((d) => d ? { ...d, name: e.target.value } : d)}
+                      className="text-base font-bold text-[#0f0f1a] text-center w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 mb-1 focus:outline-none focus:border-[#3652ca] transition-colors"
+                      placeholder="Full name"
+                    />
+                  ) : (
+                    <h6 className="font-bold text-[#0f0f1a] text-lg leading-tight">{m.name}</h6>
+                  )}
 
-                {/* Role */}
-                {isEditing ? (
-                  <input
-                    value={editData?.role ?? ""}
-                    onChange={(e) => setEditData((d) => d ? { ...d, role: e.target.value } : d)}
-                    className="text-sm text-gray-500 text-center w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 mb-3 focus:outline-none focus:border-[#3652ca] transition-colors"
-                    placeholder="Role / title"
-                  />
-                ) : (
-                  <span className="text-gray-400 text-sm mt-0.5">{m.role}</span>
-                )}
+                  {/* Role */}
+                  {isEditing ? (
+                    <input
+                      value={editData?.role ?? ""}
+                      onChange={(e) => setEditData((d) => d ? { ...d, role: e.target.value } : d)}
+                      className="text-sm text-gray-500 text-center w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 mb-3 focus:outline-none focus:border-[#3652ca] transition-colors"
+                      placeholder="Role / title"
+                    />
+                  ) : (
+                    <span
+                      className="text-xs font-semibold uppercase tracking-widest mt-1 mb-4 px-3 py-1 rounded-full"
+                      style={{ background: "rgba(54,82,202,0.08)", color: "#3652ca" }}
+                    >
+                      {m.role}
+                    </span>
+                  )}
 
-                {/* LinkedIn */}
-                {isEditing ? (
-                  <input
-                    value={editData?.linkedin ?? ""}
-                    onChange={(e) => setEditData((d) => d ? { ...d, linkedin: e.target.value } : d)}
-                    className="text-xs text-gray-500 text-center w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 mt-2 focus:outline-none focus:border-[#3652ca] transition-colors"
-                    placeholder="LinkedIn URL"
-                  />
-                ) : (
-                  <a
-                    href={m.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-[#0a66c2] hover:bg-[#004182] px-3 py-1.5 rounded-full transition-colors"
-                    aria-label="LinkedIn"
-                  >
-                    <LinkedInIcon size={13} />
-                    LinkedIn
-                  </a>
-                )}
+                  {/* Divider */}
+                  <div className="w-10 h-px mb-4" style={{ background: "linear-gradient(90deg, #3652ca, #6366f1)" }} />
+
+                  {/* Quote */}
+                  <div className="flex-1 w-full">
+                    {isEditing ? (
+                      <textarea
+                        value={editData?.quote ?? ""}
+                        onChange={(e) => setEditData((d) => d ? { ...d, quote: e.target.value } : d)}
+                        className="w-full text-sm text-gray-500 italic bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 resize-none focus:outline-none focus:border-[#3652ca] transition-colors"
+                        rows={3}
+                        placeholder="Quote…"
+                      />
+                    ) : (
+                      <p className="text-gray-400 italic text-sm leading-relaxed">
+                        &ldquo;{m.quote}&rdquo;
+                        {m.quoteAuthor && (
+                          <span className="block not-italic font-semibold text-xs mt-1.5 text-gray-300">
+                            — {m.quoteAuthor}
+                          </span>
+                        )}
+                      </p>
+                    )}
+                    {isEditing && (
+                      <input
+                        value={editData?.quoteAuthor ?? ""}
+                        onChange={(e) => setEditData((d) => d ? { ...d, quoteAuthor: e.target.value || null } : d)}
+                        className="w-full mt-2 text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#3652ca] transition-colors"
+                        placeholder="Quote author (optional)"
+                      />
+                    )}
+                  </div>
+
+                  {/* LinkedIn */}
+                  {isEditing ? (
+                    <input
+                      value={editData?.linkedin ?? ""}
+                      onChange={(e) => setEditData((d) => d ? { ...d, linkedin: e.target.value } : d)}
+                      className="text-xs text-gray-500 text-center w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 mt-4 focus:outline-none focus:border-[#3652ca] transition-colors"
+                      placeholder="LinkedIn URL"
+                    />
+                  ) : (
+                    <a
+                      href={m.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-[#0a66c2] hover:bg-[#004182] px-4 py-2 rounded-full transition-colors"
+                      aria-label="LinkedIn"
+                    >
+                      <LinkedInIcon size={13} />
+                      LinkedIn
+                    </a>
+                  )}
+                </div>
               </div>
             );
           })}
+        </div>
 
-          {/* Join the team CTA */}
-          <div
-            className="flex flex-col items-center justify-center text-center w-72 p-7 rounded-[1.25rem]"
-            style={{
-              border: "2px dashed rgba(54,82,202,0.35)",
-              background: "linear-gradient(135deg, rgba(54,82,202,0.04) 0%, rgba(99,102,241,0.06) 100%)",
-              minHeight: "380px",
-            }}
-          >
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4"
-              style={{ background: "linear-gradient(135deg, #3652ca, #6366f1)" }}
-            >
-              <Coffee size={24} className="text-white" />
+        {/* Virtual Coffee CTA — wide horizontal card */}
+        <div
+          className="rounded-[1.5rem] overflow-hidden"
+          style={{
+            background: "linear-gradient(135deg, rgba(54,82,202,0.06) 0%, rgba(99,102,241,0.1) 50%, rgba(54,82,202,0.06) 100%)",
+            border: "1.5px solid rgba(54,82,202,0.2)",
+            boxShadow: "0 4px 32px rgba(54,82,202,0.08)",
+          }}
+        >
+          <div className="flex flex-col md:flex-row items-center gap-8 px-10 py-10">
+            {/* Icon */}
+            <div className="flex-shrink-0">
+              <div
+                className="w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
+                style={{ background: "linear-gradient(135deg, #3652ca, #6366f1)" }}
+              >
+                <Coffee size={36} className="text-white" />
+              </div>
             </div>
-            <h6 className="font-bold text-[#0f0f1a] text-base mb-2">{t.joinTitle}</h6>
-            <p className="text-gray-400 text-sm mb-5 leading-relaxed">{t.joinSub}</p>
-            <a href="#Contact" className="btn-primary text-sm">
-              {t.joinCta}
-            </a>
+
+            {/* Text */}
+            <div className="flex-1 text-center md:text-left">
+              <span
+                className="inline-block text-xs font-bold uppercase tracking-widest mb-2 px-3 py-1 rounded-full"
+                style={{ background: "rgba(54,82,202,0.1)", color: "#3652ca" }}
+              >
+                {t.joinEyebrow}
+              </span>
+              <h3 className="font-brand text-2xl md:text-3xl text-[#0f0f1a] mb-2">{t.joinTitle}</h3>
+              <p className="text-gray-500 text-sm md:text-base leading-relaxed max-w-xl">{t.joinSub}</p>
+            </div>
+
+            {/* CTA */}
+            <div className="flex-shrink-0 flex flex-col items-center gap-2">
+              <a
+                href="#Contact"
+                className="btn-primary whitespace-nowrap text-sm px-7 py-3"
+              >
+                {t.joinCta}
+              </a>
+              <span className="text-xs text-gray-400">{t.joinNote}</span>
+            </div>
           </div>
         </div>
       </div>
