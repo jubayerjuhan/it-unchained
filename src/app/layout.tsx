@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Syne } from "next/font/google";
 import "./globals.css";
+import Providers from "@/components/Providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,8 +26,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
-      <body className={`${inter.variable} ${syne.variable}`}>{children}</body>
+    <html lang="fr" suppressHydrationWarning>
+      <body className={`${inter.variable} ${syne.variable}`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

@@ -2,39 +2,36 @@
 
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
-
-const slides = [
-  {
-    eyebrow: "Innovation · Talent · Growth",
-    heading: "Let's bring your\nideas to life!",
-    sub: "We recruit the best IT talent — handpicked from open and hidden markets.",
-  },
-  {
-    eyebrow: "French Innovation Accreditation",
-    heading: "Save 20% with our\nInnovation Accreditation.",
-    sub: "Government-backed tax credit on freelancer fees — keeping more capital in your project.",
-  },
-  {
-    eyebrow: "Join the Elite Network",
-    heading: "Unlock your full\npotential with us!",
-    sub: "Top IT talent. Expert mentoring. Innovative incentives built for excellence.",
-  },
-];
+import { useLang } from "@/lib/i18n";
+import { translations } from "@/translations";
 
 export default function Hero() {
+  const { lang } = useLang();
+  const t = translations[lang].hero;
+
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
+
+  // Reset slide index when language changes
+  useEffect(() => {
+    setAnimating(true);
+    const timeout = setTimeout(() => {
+      setCurrent(0);
+      setAnimating(false);
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [lang]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setAnimating(true);
       setTimeout(() => {
-        setCurrent((c) => (c + 1) % slides.length);
+        setCurrent((c) => (c + 1) % t.slides.length);
         setAnimating(false);
       }, 400);
     }, 5500);
     return () => clearInterval(timer);
-  }, []);
+  }, [t.slides.length]);
 
   function goTo(i: number) {
     if (i === current) return;
@@ -45,7 +42,7 @@ export default function Hero() {
     }, 300);
   }
 
-  const slide = slides[current];
+  const slide = t.slides[current];
 
   return (
     <section
@@ -91,7 +88,7 @@ export default function Hero() {
           {slide.eyebrow}
         </div>
 
-        {/* Heading — "IT Unchained" uses brand font everywhere it appears */}
+        {/* Heading */}
         <h1
           className="font-brand text-5xl md:text-7xl leading-[1.05] mb-6 tracking-tight"
           style={{ whiteSpace: "pre-line" }}
@@ -114,14 +111,14 @@ export default function Hero() {
 
         {/* CTA */}
         <a href="#Contact" className="btn-primary text-base">
-          Get in touch
+          {t.cta}
           <ArrowRight size={18} />
         </a>
       </div>
 
       {/* Slide dots */}
       <div className="relative z-10 flex justify-center gap-3 mt-16">
-        {slides.map((_, i) => (
+        {t.slides.map((_, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}

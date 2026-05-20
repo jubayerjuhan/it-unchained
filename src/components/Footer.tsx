@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { MapPin, Phone, Mail, Globe, ArrowRight } from "lucide-react";
+import { useLang } from "@/lib/i18n";
+import { translations } from "@/translations";
 
 function LinkedInIcon({ size = 16 }: { size?: number }) {
   return (
@@ -12,6 +14,9 @@ function LinkedInIcon({ size = 16 }: { size?: number }) {
 }
 
 export default function Footer() {
+  const { lang } = useLang();
+  const t = translations[lang].footer;
+
   const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
@@ -43,52 +48,52 @@ export default function Footer() {
           {/* Contact form */}
           <div>
             <span className="section-eyebrow mb-3 block" style={{ background: "rgba(99,102,241,0.15)", color: "#a5b4fc" }}>
-              Get in touch
+              {t.getInTouch}
             </span>
-            <h3 className="font-brand text-2xl text-white mb-8">Leave us a message</h3>
+            <h3 className="font-brand text-2xl text-white mb-8">{t.leaveMessage}</h3>
 
             {status === "success" ? (
               <div className="rounded-2xl p-6 border border-green-500/30 bg-green-500/10 text-green-300">
-                <p className="font-semibold mb-1">Message sent!</p>
-                <p className="text-sm text-green-400">We&apos;ll get back to you as soon as possible.</p>
+                <p className="font-semibold mb-1">{t.successTitle}</p>
+                <p className="text-sm text-green-400">{t.successSub}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-medium text-gray-400 mb-1.5">Full name</label>
+                  <label className="block text-xs font-medium text-gray-400 mb-1.5">{t.labels.name}</label>
                   <input
                     type="text"
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     className="input-modern"
-                    placeholder="John Doe"
+                    placeholder={t.placeholders.name}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-400 mb-1.5">Phone</label>
+                  <label className="block text-xs font-medium text-gray-400 mb-1.5">{t.labels.phone}</label>
                   <input
                     type="tel"
                     required
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
                     className="input-modern"
-                    placeholder="+33 6 00 00 00 00"
+                    placeholder={t.placeholders.phone}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-400 mb-1.5">Email</label>
+                  <label className="block text-xs font-medium text-gray-400 mb-1.5">{t.labels.email}</label>
                   <input
                     type="email"
                     required
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     className="input-modern"
-                    placeholder="you@example.com"
+                    placeholder={t.placeholders.email}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-400 mb-1.5">Message</label>
+                  <label className="block text-xs font-medium text-gray-400 mb-1.5">{t.labels.message}</label>
                   <textarea
                     required
                     rows={4}
@@ -96,18 +101,18 @@ export default function Footer() {
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                     className="input-modern resize-none"
-                    placeholder="How can we help you?"
+                    placeholder={t.placeholders.message}
                   />
                 </div>
                 {status === "error" && (
-                  <p className="text-red-400 text-sm">Something went wrong. Please try again.</p>
+                  <p className="text-red-400 text-sm">{t.error}</p>
                 )}
                 <button
                   type="submit"
                   disabled={status === "sending"}
                   className="btn-primary disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {status === "sending" ? "Sending…" : "Send message"}
+                  {status === "sending" ? t.sending : t.send}
                   {status !== "sending" && <ArrowRight size={16} />}
                 </button>
               </form>
@@ -117,9 +122,9 @@ export default function Footer() {
           {/* Contact info */}
           <div>
             <span className="section-eyebrow mb-3 block" style={{ background: "rgba(99,102,241,0.15)", color: "#a5b4fc" }}>
-              Find us
+              {t.findUs}
             </span>
-            <h3 className="font-brand text-2xl text-white mb-8">Contact us</h3>
+            <h3 className="font-brand text-2xl text-white mb-8">{t.contactUs}</h3>
 
             <ul className="space-y-5">
               <li className="flex items-start gap-3">
@@ -127,7 +132,7 @@ export default function Footer() {
                   <MapPin size={16} className="text-[#6b83e0]" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 mb-0.5">Address</p>
+                  <p className="text-xs font-medium text-gray-500 mb-0.5">{t.address}</p>
                   <p className="text-gray-300 text-sm">39 rue de l&apos;Arrivée, 95880 Enghien-les-Bains</p>
                 </div>
               </li>
@@ -136,7 +141,7 @@ export default function Footer() {
                   <Phone size={16} className="text-[#6b83e0]" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 mb-0.5">Telephone</p>
+                  <p className="text-xs font-medium text-gray-500 mb-0.5">{t.telephone}</p>
                   <a href="tel:+33663115426" className="text-gray-300 text-sm hover:text-white transition-colors">
                     +33 (0)6 63 11 54 26
                   </a>
@@ -147,7 +152,7 @@ export default function Footer() {
                   <Mail size={16} className="text-[#6b83e0]" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 mb-0.5">Email</p>
+                  <p className="text-xs font-medium text-gray-500 mb-0.5">{t.labels.email}</p>
                   <a href="mailto:contact@it-unchained.com" className="text-gray-300 text-sm hover:text-white transition-colors">
                     contact@it-unchained.com
                   </a>
@@ -158,7 +163,7 @@ export default function Footer() {
                   <Globe size={16} className="text-[#6b83e0]" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-gray-500 mb-0.5">Website</p>
+                  <p className="text-xs font-medium text-gray-500 mb-0.5">{t.website}</p>
                   <p className="text-gray-300 text-sm">www.it-unchained.com</p>
                 </div>
               </li>
@@ -172,7 +177,7 @@ export default function Footer() {
                 className="inline-flex items-center gap-2.5 bg-[#0a66c2]/20 hover:bg-[#0a66c2]/35 border border-[#0a66c2]/40 text-[#7eb3f5] hover:text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all"
               >
                 <LinkedInIcon size={16} />
-                Follow Us on LinkedIn
+                {t.linkedin}
               </a>
             </div>
           </div>
@@ -183,12 +188,12 @@ export default function Footer() {
           <p>
             © 2019{" "}
             <span className="font-brand text-gray-500 text-sm">IT Unchained</span>{" "}
-            SAS – All Rights Reserved
+            SAS – {t.copyright}
           </p>
           <ul className="flex gap-6">
-            <li><a href="#AboutUs" className="hover:text-gray-400 transition-colors">About</a></li>
-            <li><a href="#" className="hover:text-gray-400 transition-colors">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-gray-400 transition-colors">Cookies</a></li>
+            <li><a href="#AboutUs" className="hover:text-gray-400 transition-colors">{t.links.about}</a></li>
+            <li><a href="#" className="hover:text-gray-400 transition-colors">{t.links.privacy}</a></li>
+            <li><a href="#" className="hover:text-gray-400 transition-colors">{t.links.cookies}</a></li>
           </ul>
         </div>
       </div>

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Pencil, Check, X, Coffee } from "lucide-react";
+import { useLang } from "@/lib/i18n";
+import { translations } from "@/translations";
 
 function LinkedInIcon({ size = 16 }: { size?: number }) {
   return (
@@ -41,6 +43,9 @@ const initialMembers: Member[] = [
 ];
 
 export default function Team() {
+  const { lang } = useLang();
+  const t = translations[lang].team;
+
   const [members, setMembers] = useState<Member[]>(initialMembers);
   const [editingIdx, setEditingIdx] = useState<number | null>(null);
   const [editData, setEditData] = useState<Member | null>(null);
@@ -66,9 +71,9 @@ export default function Team() {
     <section id="OurTeam" className="py-24" style={{ background: "linear-gradient(180deg, #f8f9ff 0%, #eef0ff 100%)" }}>
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-14">
-          <span className="section-eyebrow">The people</span>
+          <span className="section-eyebrow">{t.eyebrow}</span>
           <h2 className="font-brand text-4xl md:text-5xl text-[#0f0f1a] mt-2">
-            Who are <span className="gradient-text-brand">we?</span>
+            {t.headingStart}<span className="gradient-text-brand">{t.headingHighlight}</span>
           </h2>
         </div>
 
@@ -224,12 +229,10 @@ export default function Team() {
             >
               <Coffee size={24} className="text-white" />
             </div>
-            <h6 className="font-bold text-[#0f0f1a] text-base mb-2">Want to join the team?</h6>
-            <p className="text-gray-400 text-sm mb-5 leading-relaxed">
-              We&apos;re always looking for passionate people.
-            </p>
+            <h6 className="font-bold text-[#0f0f1a] text-base mb-2">{t.joinTitle}</h6>
+            <p className="text-gray-400 text-sm mb-5 leading-relaxed">{t.joinSub}</p>
             <a href="#Contact" className="btn-primary text-sm">
-              Have a coffee with us
+              {t.joinCta}
             </a>
           </div>
         </div>
