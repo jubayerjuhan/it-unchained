@@ -21,6 +21,7 @@ export default function Navbar() {
 
   const otherLang = lang === "fr" ? "en" : "fr";
   const otherLangLabel = lang === "fr" ? "EN" : "FR";
+  const otherLangFlag = lang === "fr" ? "🇬🇧" : "🇫🇷";
 
   return (
     <nav
@@ -68,7 +69,7 @@ export default function Navbar() {
               className="text-xs font-semibold px-4 py-1.5 rounded-full border border-white/20 text-gray-300 hover:text-white hover:border-white/50 hover:bg-white/5 transition-all"
               aria-label={`Switch to ${otherLangLabel}`}
             >
-              {otherLangLabel}
+              <span className="mr-1.5">{otherLangFlag}</span>{otherLangLabel}
             </button>
           </li>
         </ul>
