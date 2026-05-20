@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { useLang } from "@/lib/i18n";
+import { translations } from "@/translations";
 
 const partners = [
   { name: "BPI France", logo: "/images/img_5.png", url: "https://www.bpifrance.fr/" },
@@ -24,13 +28,16 @@ const partners = [
 const track = [...partners, ...partners];
 
 export default function References() {
+  const { lang } = useLang();
+  const t = translations[lang].references;
+
   return (
     <section id="OurCustomers" className="py-24 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-12">
-          <span className="section-eyebrow">Trusted by</span>
+          <span className="section-eyebrow">{t.eyebrow}</span>
           <h2 className="font-brand text-4xl md:text-5xl text-[#0f0f1a] mt-2">
-            References &amp; <span className="gradient-text-brand">Partners</span>
+            {t.headingStart}<span className="gradient-text-brand">{t.headingHighlight}</span>
           </h2>
         </div>
 

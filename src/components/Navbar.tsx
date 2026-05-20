@@ -3,17 +3,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-
-const links = [
-  { label: "Home", href: "#" },
-  { label: "About", href: "#AboutUs" },
-  { label: "Services", href: "#Services" },
-  { label: "Team", href: "#OurTeam" },
-  { label: "References", href: "#OurCustomers" },
-  { label: "Contact", href: "#Contact" },
-];
+import { useLang } from "@/lib/i18n";
+import { translations } from "@/translations";
 
 export default function Navbar() {
+  const { lang, setLang } = useLang();
+  const t = translations[lang].navbar;
+
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -22,6 +18,9 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const otherLang = lang === "fr" ? "en" : "fr";
+  const otherLangLabel = lang === "fr" ? "EN" : "FR";
 
   return (
     <nav
@@ -52,7 +51,7 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <ul className="hidden md:flex items-center gap-1">
-          {links.map((l) => (
+          {t.links.map((l) => (
             <li key={l.label}>
               <a
                 href={l.href}
@@ -64,12 +63,13 @@ export default function Navbar() {
             </li>
           ))}
           <li className="ml-2">
-            <a
-              href="https://it-unchained.com/indexEN.html"
+            <button
+              onClick={() => setLang(otherLang)}
               className="text-xs font-semibold px-4 py-1.5 rounded-full border border-white/20 text-gray-300 hover:text-white hover:border-white/50 hover:bg-white/5 transition-all"
+              aria-label={`Switch to ${otherLangLabel}`}
             >
-              EN
-            </a>
+              {otherLangLabel}
+            </button>
           </li>
         </ul>
 
@@ -87,7 +87,7 @@ export default function Navbar() {
       {open && (
         <div className="md:hidden border-t border-white/5 bg-[#0f0f1a]/95 backdrop-blur-lg px-6 pb-5 pt-3">
           <ul className="flex flex-col gap-1">
-            {links.map((l) => (
+            {t.links.map((l) => (
               <li key={l.label}>
                 <a
                   href={l.href}
@@ -99,12 +99,13 @@ export default function Navbar() {
               </li>
             ))}
             <li className="mt-2">
-              <a
-                href="https://it-unchained.com/indexEN.html"
-                className="inline-block text-xs font-semibold px-4 py-1.5 rounded-full border border-white/20 text-gray-300"
+              <button
+                onClick={() => { setLang(otherLang); setOpen(false); }}
+                className="text-xs font-semibold px-4 py-1.5 rounded-full border border-white/20 text-gray-300 hover:text-white hover:border-white/50 hover:bg-white/5 transition-all"
+                aria-label={`Switch to ${otherLangLabel}`}
               >
-                EN
-              </a>
+                {otherLangLabel}
+              </button>
             </li>
           </ul>
         </div>
